@@ -318,13 +318,24 @@ Stm* Parser::parseStatement() {
   Exp* e = NULL;
   Body *tb, *fb;
   if (match(Token::ID)) {
-    string lex = previous->lexema;
-    cout<<lex <<" que es esto :3??"<<endl;
+    string lex = previous->lexema; //Puede ser id o nombre de funcion
 
+    if(match(Token::LPAREN)){ // FcallStm
+        list<Exp*> params;
+        e = parseCExp();
+        params.push_back(e);
+        while (match(Token::COMMA)) //Extraer parametros de funcion
+        {
+            e = parseCExp();
+            params.push_back(e);
+        }
 
+      if(!match(Token::RPAREN))
+          parserError("Se esperaba RPARENT en llamada a funcion stm");
 
+        return new FcallStatement(lex , params);
 
-
+    }
 
 
 
