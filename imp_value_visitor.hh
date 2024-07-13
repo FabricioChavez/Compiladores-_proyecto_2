@@ -18,6 +18,7 @@ public:
   virtual void visit(IfStatement* e) = 0;
   virtual void visit(WhileStatement* e) = 0;
   virtual void visit(ReturnStatement* e) = 0;
+  virtual void visit(FcallStatement * fcall) =0 ; // Fcallstm para interpreter
   
   virtual ImpValue visit(BinaryExp* e) = 0;
   virtual ImpValue visit(NumberExp* e) = 0;

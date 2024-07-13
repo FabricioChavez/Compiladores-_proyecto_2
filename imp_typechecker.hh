@@ -51,8 +51,9 @@ public:
   void visit(IfStatement*);
   void visit(WhileStatement*);
   void visit(ReturnStatement* e);
-  
-  ImpType visit(BinaryExp* e);
+  void visit(FcallStatement * fcall);
+
+    ImpType visit(BinaryExp* e);
   ImpType visit(NumberExp* e);
   ImpType visit(TrueFalseExp* e);
   ImpType visit(IdExp* e);

@@ -165,6 +165,22 @@ public:
   ~ReturnStatement();
 };
 
+class FcallStatement : public  Stm { //Declaracion de Statement de Fcall
+public:
+    string fname;
+    list<Exp*> args;
+    FcallStatement(string fname, list<Exp*> args);
+    void accept(ImpVisitor* v);
+    void accept(ImpValueVisitor* v);
+    void accept(TypeVisitor* v);
+    ~FcallStatement();
+
+
+};
+
+
+
+
 
 class StatementList {
 public:

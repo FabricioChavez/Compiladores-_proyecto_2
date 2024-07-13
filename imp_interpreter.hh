@@ -30,6 +30,7 @@ public:
   void visit(IfStatement*);
   void visit(WhileStatement*);
   void visit(ReturnStatement* e); // new
+  void visit(FcallStatement * fcall); // Fcallstm para interpreter
   
   ImpValue visit(BinaryExp* e);
   ImpValue visit(NumberExp* e);

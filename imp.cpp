@@ -133,6 +133,8 @@ PrintStatement::PrintStatement(Exp* e):e(e) { }
 IfStatement::IfStatement(Exp* c,Body *tb, Body* fb):cond(c),tbody(tb), fbody(fb) { }
 WhileStatement::WhileStatement(Exp* c,Body *b):cond(c),body(b) { }
 ReturnStatement::ReturnStatement(Exp* e):e(e) { }
+FcallStatement::FcallStatement(std::string funame, list<Exp *> arguments):fname(funame),args(arguments) {} //Constructor de FcallStm
+
 
 StatementList::StatementList():slist() {}
 VarDec::VarDec(string type, list<string> vars):type(type), vars(vars) {}
@@ -148,6 +150,7 @@ PrintStatement::~PrintStatement() { delete e; }
 IfStatement::~IfStatement() { delete fbody; delete tbody; delete cond; }
 WhileStatement::~WhileStatement() { delete body; delete cond; }
 ReturnStatement::~ReturnStatement() { delete e; }
+FcallStatement::~FcallStatement() noexcept {}
 
 StatementList::~StatementList() { }
 VarDec::~VarDec() { }
@@ -175,6 +178,11 @@ void WhileStatement::accept(ImpVisitor* v) {
 
 void ReturnStatement::accept(ImpVisitor* v) {
   return v->visit(this);
+}
+
+
+void FcallStatement::accept(ImpVisitor *v) { //visitor para Printer
+    return v->visit(this);
 }
 
 void StatementList::add(Stm* s) { slist.push_back(s);  }
@@ -233,6 +241,9 @@ void ReturnStatement::accept(ImpValueVisitor* v) {
   return v->visit(this);
 }
 
+void FcallStatement::accept(ImpValueVisitor *v) { //Visitor para interpreter
+    return v->visit(this);
+}
 
 void StatementList::accept(ImpValueVisitor* v) {
   return v->visit(this);
@@ -282,6 +293,12 @@ void WhileStatement::accept(TypeVisitor* v) {
 
 void ReturnStatement::accept(TypeVisitor* v) {
   return v->visit(this);
+}
+
+
+void FcallStatement::accept(TypeVisitor *v) {  //Visitor para Typecheker
+
+    return v->visit(this);
 }
 
 
