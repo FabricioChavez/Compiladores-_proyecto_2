@@ -307,9 +307,16 @@ int ImpCodeGen::visit(FCallExp* e) {
 
   FEntry fentry = analysis->ftable.lookup(e->fname);
   ImpType ftype = fentry.ftype;
+    int return_alloc=1;
+  if(ftype.rtype_to_string() != "void") //Si el callee void no hay necesidad de allocar memoria para return
+      codegen(nolabel, "alloc" , return_alloc );
+    list<Exp*>::iterator it;
+    auto init = e->args.begin();
+    auto fin = e->args.end();
+    for(it = init ; it!=fin ; it++) (*it)->accept(this); //parametros de callee se evaluan
+    codegen(nolabel,"mark");//guardar fp y ep
+    codegen(nolabel,"pusha",get_flabel(fentry.fname));//pushear en la pila la funcion
+    codegen(nolabel,"call");//guardar return encima de la pila
 
-  // agregar codigo
-
-  codegen(nolabel,"call");
   return 0;
 }

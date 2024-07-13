@@ -21,6 +21,7 @@ public:
   bool set_basic_type(string s);
   bool set_basic_type(TType tt);
   bool set_fun_type(list<string> slist, string s);
+  string rtype_to_string();
 private:
   TType string_to_type(string s);
 };

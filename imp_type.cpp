@@ -70,6 +70,13 @@ ImpType::TType ImpType::string_to_type(string s) {
   return tt;
 }
 
+string ImpType::rtype_to_string() { // Funcion para obtener el tipo de retorno del callee
+    int num_params = types.size()-1;
+    ImpType::TType rtype = types[num_params];
+    return ImpType::type_names[rtype];
+
+}
+
 std::ostream& operator << ( std::ostream& outs, const ImpType & type )
 {
   outs << ImpType::type_names[type.ttype];
