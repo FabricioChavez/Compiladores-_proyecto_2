@@ -226,9 +226,22 @@ void ImpCodeGen::visit(WhileStatement* s) {
 }
 
 void ImpCodeGen::visit(ReturnStatement* s) {
-  // agregar codigo
-  
-  codegen(nolabel,"return", 100);  // modifcar 100
+
+    VarEntry return_addr = direcciones.lookup("return");
+
+    if(s->e == nullptr) //Para void o main (no expresion de return esperada)
+    {
+        codegen(nolabel,"return" , return_addr.dir);//retornar location
+        return;
+    }
+
+
+    // agregar codigo
+
+
+  s->e->accept(this); //generar el codigo de la expresion de return
+    codegen(nolabel , "storer" , -return_addr.dir);//guardar en direccion
+  codegen(nolabel,"return", return_addr.dir);  //remover elementos de la pila
   return;
 }
 
