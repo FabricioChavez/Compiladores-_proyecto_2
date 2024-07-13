@@ -250,3 +250,7 @@ ImpValue ImpInterpreter::visit(FCallExp* e) {
   }
   return retval;
 }
+
+void ImpInterpreter::visit(FcallStatement *fcall) {
+    return;
+}

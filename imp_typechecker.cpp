@@ -347,3 +347,7 @@ ImpType ImpTypeChecker::visit(FCallExp* e) {
 
     return rtype;
 }
+
+void ImpTypeChecker::visit(FcallStatement *fcall) {
+    return;
+}

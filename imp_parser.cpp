@@ -319,6 +319,15 @@ Stm* Parser::parseStatement() {
   Body *tb, *fb;
   if (match(Token::ID)) {
     string lex = previous->lexema;
+    cout<<lex <<" que es esto :3??"<<endl;
+
+
+
+
+
+
+
+
     if (!match(Token::ASSIGN)) {
       cout << "Error: esperaba =" << endl;
       exit(0);

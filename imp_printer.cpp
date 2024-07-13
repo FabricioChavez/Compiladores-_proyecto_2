@@ -170,3 +170,7 @@ int ImpPrinter::visit(FCallExp* e) {
   cout << ')';
   return 0;
 }
+
+void ImpPrinter::visit(FcallStatement *) {
+    return;
+}

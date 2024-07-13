@@ -320,3 +320,7 @@ int ImpCodeGen::visit(FCallExp* e) {
 
   return 0;
 }
+
+void ImpCodeGen::visit(FcallStatement *) {
+    return;
+}

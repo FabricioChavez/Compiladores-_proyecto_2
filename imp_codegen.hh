@@ -35,6 +35,7 @@ public:
   void visit(IfStatement*);
   void visit(WhileStatement*);
   void visit(ReturnStatement*);
+  void visit(FcallStatement *); //Declaration of FcallStm for codegen compiling
 
   
   int visit(BinaryExp* e);
