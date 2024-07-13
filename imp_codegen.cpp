@@ -75,6 +75,8 @@ void ImpCodeGen::visit(Program* p) {
 void ImpCodeGen::visit(Body * b) {
 
   // guardar direccion inicial current_dir
+  int internal_dir = current_dir;
+ current_dir =0;
   
   direcciones.add_level();
   
@@ -84,6 +86,8 @@ void ImpCodeGen::visit(Body * b) {
   direcciones.remove_level();
 
   // restaurar dir
+
+    current_dir = internal_dir;
   return;
 }
 
@@ -120,17 +124,42 @@ void ImpCodeGen::visit(FunDec* fd) {
   FEntry fentry = analysis->ftable.lookup(fd->fname);
   current_dir = 0;
   int m = fd->types.size();
-  VarEntry ventry;
 
+
+//  cout<<"fname          :" << fentry.fname <<endl;
+//  cout<<"ImpType        :" << fentry.ftype <<endl;
+//  cout<<" mem_locals    :" << fentry.mem_locals <<endl;
+//  cout<<"max_stacks     :" << fentry.max_stack <<endl;
+//  cout<<"m              :"<<m<<endl;
+
+  VarEntry ventry;
+  int location = m+3;
   // agregar direcciones de argumentos
+  int enter_parameter = fentry.mem_locals + fentry.max_stack; // Se calcula el espacio en stack que usara la funcion
+  int alloc_parameter =  fentry.mem_locals  ;
+
+  for(auto function_parameter_id : fd->vars)
+  {
+      current_dir++;
+      ventry.dir = current_dir - location;
+      ventry.is_global = process_global;
+      direcciones.add_var(function_parameter_id , ventry);
+  }
 
   // agregar direccion de return
+    ventry.dir = location;
+   //Locacion donde esta la variable return en referencia a la funcion
+   direcciones.add_var("return" , ventry ) ;//agregar al envirorment
 
   // generar codigo para fundec
+    codegen("skip" , get_flabel(fd->fname));
+    codegen(nolabel,"enter" ,enter_parameter);
+    codegen(nolabel ,"alloc" , alloc_parameter);
+
 
   num_params = m;
 
-  //fd->body->accept(this);
+  fd->body->accept(this);
   // -- sacar comentarios para generar codigo del cuerpo
 
   return;

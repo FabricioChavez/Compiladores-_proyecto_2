@@ -34,7 +34,7 @@ public:
     unordered_map<string, T> r;
     ribs.push_back(r);
   }
-  void add_var(string var, T value) {
+  void add_var(string const var, T value) {
     if (ribs.size() == 0) {
       cout << "Environment sin niveles: no se pueden agregar variables" << endl;
       exit(0);
