@@ -238,18 +238,37 @@ FunDec* Parser::parseFunDec() {
     if (!match(Token::LPAREN)) parserError("Esperaba LPAREN en declaracion de funcion");
     list<string> types;
     list<string> vars;
-    if (!check(Token::RPAREN)) {
-      if (!match(Token::ID)) parserError("Expecting type in fun declaration");
-      types.push_back(previous->lexema);
-      if (!match(Token::ID)) parserError("Expecting identifier in fun declaration");
-      vars.push_back(previous->lexema);
-      while(match(Token::COMMA)) {
-	types.push_back(previous->lexema);
-	if (!match(Token::ID)) parserError("Expecting identifier in fun declaration");
-	vars.push_back(previous->lexema);
-      }     
-    }
-    if (!match(Token::RPAREN)) parserError("Esperaba RPAREN en declaracion de funcion");
+
+
+
+      while(true) {
+
+//          cout<<"we are hare previous --> "<<current<<endl;
+          if(current->type == Token::RPAREN){
+              break;
+          }
+
+          if(!match(Token::ID)) parserError("Se espera tipo de parametro de funcion");
+          types.push_back(previous->lexema);
+//          cout<<"we are hare first match --> "<<current<<endl;
+
+
+          if(!match(Token::ID)) parserError("Se esperaba id de parametro de funcion");
+          vars.push_back(previous->lexema);
+//          cout<<"we are hare second match --> "<<current<<endl;
+
+//         cout<<current->type <<" maps to -->" << Token::RPAREN<<endl;
+
+
+
+          match(Token::COMMA);
+
+      }
+
+
+      if (!match(Token::RPAREN)) parserError("Esperaba RPAREN en declaracion de funcion");
+
+
     body = parseBody();
     if (!match(Token::ENDFUN)) parserError("Esperaba ENDFUN en declaracion de funcion");
     fd = new FunDec(fname, types, vars, rtype, body);
