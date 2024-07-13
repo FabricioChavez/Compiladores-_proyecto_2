@@ -171,6 +171,22 @@ int ImpPrinter::visit(FCallExp* e) {
   return 0;
 }
 
-void ImpPrinter::visit(FcallStatement *) {
+void ImpPrinter::visit(FcallStatement * fcall) {
+
+    cout << fcall->fname<<" (";
+    list<Exp*>::iterator it;
+    for (it = fcall->args.begin(); it != fcall->args.end(); ++it)
+    {
+        if(next(it)!=fcall->args.end())
+        {
+            (*it)->accept(this);
+            cout<<" ,";
+        }else (*it)->accept(this);
+    }
+
+    cout<<")";
+
     return;
+
+
 }

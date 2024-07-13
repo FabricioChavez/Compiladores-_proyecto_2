@@ -83,6 +83,7 @@ void ImpInterpreter::visit(StatementList* s) {
 
 void ImpInterpreter::visit(AssignStatement* s) {
   ImpValue v = s->rhs->accept(this);
+
   if (!env.check(s->id)) {
     cout << "Variable " << s->id << " undefined" << endl;
     exit(0);
@@ -134,6 +135,8 @@ void ImpInterpreter::visit(WhileStatement* s) {
 void ImpInterpreter::visit(ReturnStatement* s) {
   if (s->e != NULL)
     retval = s->e->accept(this);
+
+
   retcall = true;
   return;
 }
@@ -236,10 +239,10 @@ ImpValue ImpInterpreter::visit(FCallExp* e) {
   }
   retcall = false;
   fdec->body->accept(this);
-  if (!retcall) {
-    cout << "Error: Funcion " << e->fname << " no ejecuto RETURN" << endl;
-    exit(0);
-  }
+//  if (!retcall) {
+//    cout << "Error: Funcion " << e->fname << " no ejecuto RETURN" << endl;
+//    exit(0);
+//  }
   retcall = false;
   env.remove_level();
   // chequear tipo de retorno.
@@ -252,5 +255,31 @@ ImpValue ImpInterpreter::visit(FCallExp* e) {
 }
 
 void ImpInterpreter::visit(FcallStatement *fcall) {
+
+    FunDec* fdec = fdecs.lookup(fcall->fname);
+    env.add_level();
+    list<Exp*>::iterator it;
+    list<string>::iterator varit;
+    list<string>::iterator vartype;
+    ImpVType tt;
+    // comparar longitud
+    if (fdec->vars.size() != fcall->args.size()) {
+        cout << "Error: Numero de parametros incorrecto en llamada a " << fdec->fname << endl;
+        exit(0);
+    }
+    for (it = fcall->args.begin(), varit = fdec->vars.begin(), vartype = fdec->types.begin();
+         it != fcall->args.end(); ++it, ++varit, ++vartype) {
+        tt = ImpValue::get_basic_type(*vartype);
+        ImpValue v = (*it)->accept(this);
+        if (v.type != tt) {
+            cout << "Error FCall: Tipos de param y arg no coinciden. Funcion " << fdec->fname << " param " << *varit << endl;
+            exit(0);
+        }
+        env.add_var(*varit, v);
+    }
+    retcall = false;
+    fdec->body->accept(this);
+
+    retcall = false;
     return;
 }

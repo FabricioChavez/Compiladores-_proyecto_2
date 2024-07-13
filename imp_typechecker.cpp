@@ -308,6 +308,8 @@ ImpType ImpTypeChecker::visit(CondExp* e) {
 }
 
 ImpType ImpTypeChecker::visit(FCallExp* e) {
+
+    sp_incr(0);
     if (!env.check(e->fname)) {
         cout << "(Function call): " << e->fname <<  " no existe" << endl;
         exit(0);
@@ -343,11 +345,45 @@ ImpType ImpTypeChecker::visit(FCallExp* e) {
         }
         i++;
     }
-
+    sp_decr(0);
 
     return rtype;
 }
 
 void ImpTypeChecker::visit(FcallStatement *fcall) {
+    if (!env.check(fcall->fname)) {
+        cout << "(Function call): " << fcall->fname <<  " no existe" << endl;
+        exit(0);
+    }
+    ImpType funtype = env.lookup(fcall->fname);
+    if (funtype.ttype != ImpType::FUN) {
+        cout << "(Function call): " << fcall->fname <<  " no es una funcion" << endl;
+        exit(0);
+    }
+
+    // check args
+    int num_fun_args = funtype.types.size()-1;
+    int num_fcall_args = fcall->args.size();
+    ImpType rtype;
+    rtype.set_basic_type(funtype.types[num_fun_args]);
+
+    //checar por numero de argumentos
+    if (num_fun_args != num_fcall_args) {
+        cout << "(Function callstm) Numero de argumentos no corresponde a declaracion de: " << fcall->fname << endl;
+        exit(0);
+    }
+
+    ImpType argtype;
+    list<Exp*>::iterator it;
+    int i = 0;
+    for (it = fcall->args.begin(); it != fcall->args.end(); ++it) {
+        argtype = (*it)->accept(this);
+        if (argtype.ttype != funtype.types[i]) {
+            cout << "(Function call) Tipo de argumento no corresponde a tipo de parametro en fcall de: " << fcall->fname << endl;
+            exit(0);
+        }
+        i++;
+    }
+
     return;
 }
