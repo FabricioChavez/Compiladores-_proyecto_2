@@ -345,7 +345,7 @@ ImpType ImpTypeChecker::visit(FCallExp* e) {
         }
         i++;
     }
-    sp_decr(0);
+//    sp_decr(0);
 
     return rtype;
 }

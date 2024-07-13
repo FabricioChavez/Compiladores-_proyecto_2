@@ -152,7 +152,7 @@ void ImpCodeGen::visit(FunDec* fd) {
    direcciones.add_var("return" , ventry ) ;//agregar al envirorment
 
   // generar codigo para fundec
-    codegen("skip" , get_flabel(fd->fname));
+    codegen(  get_flabel(fd->fname) , "skip");
     codegen(nolabel,"enter" ,enter_parameter);
     codegen(nolabel ,"alloc" , alloc_parameter);
 
@@ -177,10 +177,10 @@ void ImpCodeGen::visit(StatementList* s) {
 void ImpCodeGen::visit(AssignStatement* s) {
   s->rhs->accept(this);
   VarEntry ventry = direcciones.lookup(s->id);
-
-  int location = num_params+3; // Previamente guardado en declaracion de funcion
+  cout<<" var name is " << s->id<<"is global well -->"<<ventry.dir<<" "<<boolalpha<<ventry.is_global<<endl;
+//  int location = num_params+3; // Previamente guardado en declaracion de funcion
   if(ventry.is_global)
-      codegen(nolabel,"store", ventry.dir - location);
+      codegen(nolabel,"store", ventry.dir );
   else codegen(nolabel,"storer", ventry.dir);
 
 
@@ -321,6 +321,18 @@ int ImpCodeGen::visit(FCallExp* e) {
   return 0;
 }
 
-void ImpCodeGen::visit(FcallStatement *) {
-    return;
+void ImpCodeGen::visit(FcallStatement * fcall) {
+
+    FEntry fentry = analysis->ftable.lookup(fcall->fname); //Buscar funcion
+
+
+
+    list<Exp*>::iterator it;
+    auto init = fcall->args.begin();
+    auto fin = fcall->args.end();
+    for(it = init ; it!=fin ; it++) (*it)->accept(this); //parametros de callee se evaluan
+
+    codegen(nolabel,"mark");//guardar fp y ep
+    codegen(nolabel,"pusha",get_flabel(fentry.fname));//pushear en la pila la funcion
+    codegen(nolabel,"call");
 }
