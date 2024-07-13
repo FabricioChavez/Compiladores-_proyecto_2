@@ -177,8 +177,13 @@ void ImpCodeGen::visit(StatementList* s) {
 void ImpCodeGen::visit(AssignStatement* s) {
   s->rhs->accept(this);
   VarEntry ventry = direcciones.lookup(s->id);
-  // generar codigo store/storer
-  codegen(nolabel,"store", 100); // modificar 100 global vs local
+
+  int location = num_params+3; // Previamente guardado en declaracion de funcion
+  if(ventry.is_global)
+      codegen(nolabel,"store", ventry.dir - location);
+  else codegen(nolabel,"storer", ventry.dir);
+
+
 
   return;
 }
