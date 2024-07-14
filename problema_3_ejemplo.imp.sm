@@ -1,0 +1,67 @@
+start: skip
+enter 2
+alloc 2
+mark
+pusha Lmain
+call
+halt
+Lforfixed: skip
+enter 5
+alloc 2
+push 1
+storer 1
+push  5
+storer 2
+L0: skip
+loadr 2
+push  8
+le
+jmpz L1
+loadr 2
+print
+loadr 2
+push 1
+add
+storer 2
+goto L0
+L1: skip
+return 4
+Lfordynamic: skip
+enter 5
+alloc 1
+push  100
+storer 1
+loadr -3
+storer 1
+L2: skip
+loadr 1
+loadr -3
+push  2
+add
+le
+jmpz L3
+loadr 1
+print
+loadr 1
+push 1
+add
+storer 1
+goto L2
+L3: skip
+loadr 1
+print
+return 4
+Lmain: skip
+enter 3
+alloc 1
+push  20
+storer 1
+loadr 1
+mark
+pusha Lforfixed
+call
+loadr 1
+mark
+pusha Lfordynamic
+call
+return 3

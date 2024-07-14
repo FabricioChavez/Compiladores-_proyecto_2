@@ -1,0 +1,32 @@
+var int a, b;
+
+fun void forfixed(int x)
+    var bool m;
+    m = true;
+    for z in (5 , 8) do
+        print(z)
+    endfor ;
+
+    return ()
+
+endfun
+
+
+fun void fordynamic(int x)
+    var int m;
+    m = 100;
+    for m in (x, x+2) do
+        print(m)
+    endfor;
+    print(m);
+    return ()
+
+endfun
+
+fun void main()
+  var int y;
+  y=20;
+  forfixed(y);
+  fordynamic(y);
+  return ()
+endfun
