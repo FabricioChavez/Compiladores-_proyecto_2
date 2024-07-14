@@ -283,3 +283,8 @@ void ImpInterpreter::visit(FcallStatement *fcall) {
     retcall = false;
     return;
 }
+
+void ImpInterpreter::visit(ForDoStatement *fordo) {
+    return;
+
+}

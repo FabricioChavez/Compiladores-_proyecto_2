@@ -177,7 +177,7 @@ void ImpCodeGen::visit(StatementList* s) {
 void ImpCodeGen::visit(AssignStatement* s) {
   s->rhs->accept(this);
   VarEntry ventry = direcciones.lookup(s->id);
-  cout<<" var name is " << s->id<<"is global well -->"<<ventry.dir<<" "<<boolalpha<<ventry.is_global<<endl;
+//  cout<<" var name is " << s->id<<"is global well -->"<<ventry.dir<<" "<<boolalpha<<ventry.is_global<<endl;
 //  int location = num_params+3; // Previamente guardado en declaracion de funcion
   if(ventry.is_global)
       codegen(nolabel,"store", ventry.dir );
@@ -335,4 +335,8 @@ void ImpCodeGen::visit(FcallStatement * fcall) {
     codegen(nolabel,"mark");//guardar fp y ep
     codegen(nolabel,"pusha",get_flabel(fentry.fname));//pushear en la pila la funcion
     codegen(nolabel,"call");
+}
+
+void ImpCodeGen::visit(ForDoStatement *) {
+    return;
 }

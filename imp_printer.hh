@@ -19,7 +19,8 @@ public:
   void visit(IfStatement*);
   void visit(WhileStatement*);
   void visit(ReturnStatement*);
-  void visit(FcallStatement * ); // Fcallstm para printer
+  void visit(FcallStatement * );
+  void visit(ForDoStatement* );// Fordo para printer
 
     int visit(BinaryExp* e);
   int visit(NumberExp* e);

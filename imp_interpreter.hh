@@ -31,6 +31,7 @@ public:
   void visit(WhileStatement*);
   void visit(ReturnStatement* e); // new
   void visit(FcallStatement * fcall); // Fcallstm para interpreter
+  void visit(ForDoStatement* fordo); //Declaration of Fordo for interpreter
   
   ImpValue visit(BinaryExp* e);
   ImpValue visit(NumberExp* e);

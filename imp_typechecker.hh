@@ -52,6 +52,7 @@ public:
   void visit(WhileStatement*);
   void visit(ReturnStatement* e);
   void visit(FcallStatement * fcall);
+  void visit (ForDoStatement * ); //Declaration of Fordo for typecheck
 
     ImpType visit(BinaryExp* e);
   ImpType visit(NumberExp* e);

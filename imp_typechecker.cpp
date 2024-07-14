@@ -387,3 +387,7 @@ void ImpTypeChecker::visit(FcallStatement *fcall) {
 
     return;
 }
+
+void ImpTypeChecker::visit(ForDoStatement *) {
+    return;
+}

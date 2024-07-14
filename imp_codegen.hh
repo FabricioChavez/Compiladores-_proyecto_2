@@ -36,7 +36,7 @@ public:
   void visit(WhileStatement*);
   void visit(ReturnStatement*);
   void visit(FcallStatement *); //Declaration of FcallStm for codegen compiling
-
+  void visit(ForDoStatement*) ; //Declaration of FordoStm for codegen compiling
   
   int visit(BinaryExp* e);
   int visit(NumberExp* e);

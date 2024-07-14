@@ -170,7 +170,7 @@ int ImpPrinter::visit(FCallExp* e) {
   cout << ')';
   return 0;
 }
-
+//Pregunta dos
 void ImpPrinter::visit(FcallStatement * fcall) {
 
     cout << fcall->fname<<" (";
@@ -189,4 +189,9 @@ void ImpPrinter::visit(FcallStatement * fcall) {
     return;
 
 
+}
+
+//Pregunta tres
+void ImpPrinter::visit(ForDoStatement *) {
+    return;
 }
