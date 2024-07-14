@@ -184,7 +184,8 @@ public:
  string  var_id;
  Exp* init ;
  Exp* fin ;
- ForDoStatement(string  , Exp* , Exp*);
+ Body * bd_;
+ ForDoStatement(string  , Exp* , Exp* , Body* );
  void accept(ImpVisitor* v);
  void accept(ImpValueVisitor* v);
  void accept(TypeVisitor* v);

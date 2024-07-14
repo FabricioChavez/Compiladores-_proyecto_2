@@ -134,7 +134,8 @@ IfStatement::IfStatement(Exp* c,Body *tb, Body* fb):cond(c),tbody(tb), fbody(fb)
 WhileStatement::WhileStatement(Exp* c,Body *b):cond(c),body(b) { }
 ReturnStatement::ReturnStatement(Exp* e):e(e) { }
 FcallStatement::FcallStatement(std::string funame, list<Exp *> arguments):fname(funame),args(arguments) {} //Constructor de FcallStm
-ForDoStatement::ForDoStatement(std::string id , Exp * e1, Exp * e2) :var_id(id), init(e1), fin(e2){} //Constructor de ForDostm
+ForDoStatement::ForDoStatement(std::string id , Exp * e1, Exp * e2 , Body* body) :var_id(id), init(e1), fin(e2),
+bd_(body){} //Constructor de ForDostm
 
 StatementList::StatementList():slist() {}
 VarDec::VarDec(string type, list<string> vars):type(type), vars(vars) {}

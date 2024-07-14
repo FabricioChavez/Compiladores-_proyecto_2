@@ -3,10 +3,11 @@
 #include "imp_parser.hh"
 
 
-const char* Token::token_names[32] = {
+const char* Token::token_names[35] = {
   "LPAREN" , "RPAREN", "PLUS", "MINUS", "MULT","DIV","EXP","LT","LTEQ","EQ",
   "NUM", "ID", "PRINT", "SEMICOLON", "COMMA", "ASSIGN", "CONDEXP", "IF", "THEN", "ELSE", "ENDIF", "WHILE", "DO",
-  "ENDWHILE", "ERR", "END", "VAR", "RETURN", "FUN", "ENDFUN", "TRUE", "FALSE" };
+  "ENDWHILE", "ERR", "END", "VAR", "RETURN", "FUN", "ENDFUN", "TRUE", "FALSE"
+,"FOR" ,  "ENDFOR"  , "IN"};
 
 Token::Token(Type type):type(type) { lexema = ""; }
 
@@ -43,6 +44,10 @@ Scanner::Scanner(string s):input(s),first(0),current(0) {
   reserved["endfun"] = Token::ENDFUN;
   reserved["true"] = Token::TRUE;
   reserved["false"] = Token::FALSE;
+
+  reserved["for"] = Token::FOR;
+  reserved["endfor"] = Token::ENDFOR;
+  reserved["in"] = Token::ID;
 }
 
 Token* Scanner::nextToken() {
@@ -383,7 +388,63 @@ Stm* Parser::parseStatement() {
     if (!match(Token::RPAREN)) parserError("Esperaba 'rparen'");
     s = new ReturnStatement(e);
     
-  } else {
+  } else if(match(Token::FOR)){
+
+      string id ;
+      Exp * init ;
+      Exp*  fin ;
+      Body* bd;
+      cout<<current<< " HERE IN FOR DO"<<endl;
+      id = current->lexema;
+      cout<<id<< " HERE IN FOR DO 1"<<endl;
+      if(!match(Token::ID)) {
+          parserError("No se encontro id para el ForDo");
+          exit(0);
+      }
+
+      cout<<current<< " HERE IN FOR DO 2"<<endl;
+      if(!match(Token::ID))
+      {
+          parserError("ForDo mal formado falta in");
+          exit(0);
+      }
+      cout<<current<< " HERE IN FOR DO 2"<<endl;
+      if(!match(Token::LPAREN)){
+          parserError("ForDo mal formado falta Lparen");
+          exit(0);
+      }
+
+      init = parseCExp();
+      if(!match(Token::COMMA))
+      {
+          parserError("ForDo mal formado falta coma");
+          exit(0);
+      }
+      fin = parseCExp();
+
+      if(!match(Token::RPAREN))
+      {
+          parserError("ForDo mal formado falta Rparent");
+          exit(0);
+      }
+
+      if(!match(Token::DO))
+      {
+          parserError("ForDo mal formado falta Do");
+          exit(0);
+      }
+      bd = parseBody();
+
+      if(!match(Token::ENDFOR))
+      {
+          parserError("Se esperaba endfor");
+          exit(0);
+      }
+
+      s = new ForDoStatement(id , init , fin , bd);
+
+
+  }else {
     cout << "No se encontro Statement" << endl;
     exit(0);
   }
