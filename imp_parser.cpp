@@ -394,21 +394,21 @@ Stm* Parser::parseStatement() {
       Exp * init ;
       Exp*  fin ;
       Body* bd;
-      cout<<current<< " HERE IN FOR DO"<<endl;
+//      cout<<current<< " HERE IN FOR DO"<<endl;
       id = current->lexema;
-      cout<<id<< " HERE IN FOR DO 1"<<endl;
+//      cout<<id<< " HERE IN FOR DO 1"<<endl;
       if(!match(Token::ID)) {
           parserError("No se encontro id para el ForDo");
           exit(0);
       }
 
-      cout<<current<< " HERE IN FOR DO 2"<<endl;
+//      cout<<current<< " HERE IN FOR DO 2"<<endl;
       if(!match(Token::ID))
       {
           parserError("ForDo mal formado falta in");
           exit(0);
       }
-      cout<<current<< " HERE IN FOR DO 2"<<endl;
+//      cout<<current<< " HERE IN FOR DO 2"<<endl;
       if(!match(Token::LPAREN)){
           parserError("ForDo mal formado falta Lparen");
           exit(0);

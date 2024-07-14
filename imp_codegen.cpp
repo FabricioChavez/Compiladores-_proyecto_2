@@ -337,6 +337,38 @@ void ImpCodeGen::visit(FcallStatement * fcall) {
     codegen(nolabel,"call");
 }
 
-void ImpCodeGen::visit(ForDoStatement *) {
-    return;
+void ImpCodeGen::visit(ForDoStatement * fordo) {
+
+ string loop_again = next_label();
+ string escape_loop = next_label();
+
+
+// direcciones.add_level();
+ VarEntry id_dirr ;
+ id_dirr.dir = num_params+1 ;
+ id_dirr.is_global = false;
+ string  id = fordo->var_id;
+
+ if(!direcciones.check(id))  direcciones.add_var(id , id_dirr);
+
+
+ fordo->init->accept(this);
+ codegen(nolabel , "storer" ,  direcciones.lookup(id).dir);
+ codegen(loop_again , "skip");
+ codegen(nolabel,"loadr" , direcciones.lookup(id).dir);
+ fordo->fin->accept(this);
+ codegen(nolabel , "le");
+ codegen(nolabel , "jmpz", escape_loop);
+ fordo->bd_->accept(this);
+ codegen(nolabel , "loadr" , direcciones.lookup(id).dir);
+ codegen(nolabel,"push",1);
+ codegen(nolabel, "add");
+ codegen(nolabel , "storer", direcciones.lookup(id).dir);
+ codegen(nolabel,"goto", loop_again);
+ codegen(escape_loop , "skip");
+//direcciones.remove_level();
+
+
+
+
 }

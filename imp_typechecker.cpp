@@ -388,6 +388,40 @@ void ImpTypeChecker::visit(FcallStatement *fcall) {
     return;
 }
 
-void ImpTypeChecker::visit(ForDoStatement *) {
-    return;
+void ImpTypeChecker::visit(ForDoStatement * fordo) {
+
+
+//  env.add_level();
+
+    if(!env.check(fordo->var_id))
+    {
+        cout<<"variable no esta agregar"<<endl;
+        dir++;
+        max_dir++;
+
+        ImpType id ;
+        id.set_basic_type("int");
+        env.add_var(fordo->var_id , id);
+
+    }
+    ImpType begin  = fordo->init->accept(this);
+
+    sp_incr(0);
+    ImpType finish = fordo->fin->accept(this);
+    sp_decr(0);
+
+    if(!begin.match(inttype) )
+    {
+        cerr<<"expresion de inicio no es int";
+        exit(0);
+    }
+    if(!finish.match(inttype) )
+    {
+        cerr<<"expresion de fin no es int";
+        exit(0);
+    }
+//    env.remove_level();
+
+        return;
+
 }

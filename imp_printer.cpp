@@ -192,6 +192,13 @@ void ImpPrinter::visit(FcallStatement * fcall) {
 }
 
 //Pregunta tres
-void ImpPrinter::visit(ForDoStatement *) {
-    return;
+void ImpPrinter::visit(ForDoStatement * fordo) {
+    cout << "for " << fordo->var_id <<  " in " << "(";
+    fordo->init->accept(this);
+    cout<<", ";
+    fordo->fin->accept(this);
+    cout<<") do"<<endl;
+    fordo->bd_->accept(this);
+    cout<<"endfor";
+
 }

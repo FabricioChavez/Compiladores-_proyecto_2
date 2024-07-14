@@ -285,6 +285,21 @@ void ImpInterpreter::visit(FcallStatement *fcall) {
 }
 
 void ImpInterpreter::visit(ForDoStatement *fordo) {
-    return;
+    env.add_level();
+    ImpValue start = fordo->init->accept(this);
+    ImpValue finish = fordo->fin->accept(this);
+    env.add_var(fordo->var_id ,start ); // dar valor incial a la variable
+    int i = start.int_value;
+    ImpValue current = start;
+    while (i<=finish.int_value)
+    {
+        fordo->bd_->accept(this);
+        i++;
+        current.int_value = i;
+        env.update(fordo->var_id ,current);
+    }
+    env.remove_level();
+
+
 
 }
